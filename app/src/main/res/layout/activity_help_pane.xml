@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="224dp"
                 android:layout_margin="20dp"
-                android:backgroundTint="?attr/colorOnPrimary"
+                android:backgroundTint="?attr/colorOnSecondary"
                 android:clickable="true"
                 app:cardCornerRadius="12dp"
                 android:focusable="true">
