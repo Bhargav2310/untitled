@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/list_item_parent"
-    android:layout_margin="8dp"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:strokeColor="?attr/colorOnPrimary"
+    app:strokeWidth="0.4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,19 +21,36 @@
             android:id="@+id/img_tmb"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/ic_launcher"
             app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"/>
+            app:civ_border_color="#FF000000" />
 
-        <TextView
-            android:id="@+id/tvTitle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="7dp"
-            android:gravity="center"
-            android:text="Title"
-            android:textSize="18sp"
-            android:fontFamily="@font/rubik_light"
-            android:textStyle="bold" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_light"
+                android:text="Title"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/rubik_light"
+                android:text="Subtitle"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -11,11 +11,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     SharedPreferences preferences;
     SwitchPreference darkMode, bioAuth, haptics;
-    Preference logout, appInfo, forgot;
+    Preference logout, appInfo, contact, forgot;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,28 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         forgot = findPreference("forgot");
         forgot.setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(requireContext(), ForgotPasswordActivity.class));
+            return false;
+        });
+
+        appInfo = findPreference("version");
+        appInfo.setOnPreferenceClickListener(preference -> {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("App version")
+                    .setMessage("Version: " + getString(R.string.app_version))
+                    .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
+            return false;
+        });
+
+        contact = findPreference("contact");
+        contact.setOnPreferenceClickListener(preference -> {
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Contact us")
+                    .setMessage("If any problems arise, contact\nEmail: nkocet@orchidengg.ac.in\nPhone: +91 777777777")
+                    .setPositiveButton("Close", (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
             return false;
         });
     }

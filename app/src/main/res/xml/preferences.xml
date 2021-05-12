@@ -45,7 +45,7 @@
 
     <Preference
         android:icon="@drawable/ic_baseline_info_24"
-        android:key="help"
+        android:key="version"
         android:summary="@string/app_version"
         android:title="App version" />
 
