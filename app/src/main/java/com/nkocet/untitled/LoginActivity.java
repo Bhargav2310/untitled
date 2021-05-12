@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordTextView = findViewById(R.id.passwordTextView);
         proceed = findViewById(R.id.proceed2);
 
-        // TODO: 24/4/21 Validation code here
-
         proceed.setOnClickListener(v -> {
             if (TextUtils.isEmpty(nameTextView.getText())) {
                 nameTextView.setError("This field cannot be left empty!");
@@ -58,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                             .putString("pin", passwordTextView.getText().toString())
                             .putBoolean("isFirstTime", false)
                             .apply();
-                    Log.d("Login Activity", "onCreate: Done saving!");
 
                     startActivity(new Intent(LoginActivity.this, Dashboard.class));
                     finish();

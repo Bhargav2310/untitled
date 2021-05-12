@@ -5,8 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.view.View;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -21,10 +23,10 @@ public class Database extends SQLiteOpenHelper {
     private static final String
             TABLE_NAME = "Devices",
             COL_0 = "DEV_ID",
-            COL_1 = "Object",
-            TAG = "Database";
+            COL_1 = "Object";
 
-    private static final ArrayList<String[]> lightPalette = new ArrayList<>(),
+    private static final ArrayList<String[]>
+            lightPalette = new ArrayList<>(),
             darkPalette = new ArrayList<>();
 
     static {
@@ -43,8 +45,7 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String cmd = String.format("CREATE TABLE %s (%s TEXT, %s BLOB)",
-                TABLE_NAME, COL_0, COL_1);
+        String cmd = String.format("CREATE TABLE %s (%s TEXT, %s BLOB)", TABLE_NAME, COL_0, COL_1);
         db.execSQL(cmd);
     }
 
@@ -96,10 +97,11 @@ public class Database extends SQLiteOpenHelper {
     public String getLastId() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = String.format("SELECT * FROM %s", TABLE_NAME);
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.getCount() == 0) return "0";
-        cursor.moveToLast();
-        return cursor.getString(0);
+        try (Cursor cursor = db.rawQuery(query, null)) {
+            if (cursor.getCount() == 0) return "0";
+            cursor.moveToLast();
+            return cursor.getString(0);
+        }
     }
 
     public void editCard(Card initCard, Card finalCard) {
@@ -120,7 +122,6 @@ public class Database extends SQLiteOpenHelper {
 
     public void delete(Card card) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d(TAG, String.format("delete: %s", card.id));
         db.delete(TABLE_NAME, COL_0 + "=?", new String[]{card.id});
     }
 
@@ -161,11 +162,11 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public ArrayList<Card> getTimeControlCards(boolean darkMode) {
-        ArrayList<Card> cards = getCardsByDarkMode(darkMode),
-                finalCards = new ArrayList<>();
+        ArrayList<Card> cards = getCardsByDarkMode(darkMode);
+        ArrayList<Card> result = new ArrayList<>();
         for (Card card : cards)
-            if (card.sprinkler.activeTime[0] != null && card.sprinkler.activeTime[1] != null)
-                finalCards.add(card);
-        return finalCards;
+            if (!Arrays.equals(card.sprinkler.activeTime, new String[]{null, null}))
+                result.add(card);
+        return result;
     }
 }

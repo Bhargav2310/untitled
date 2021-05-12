@@ -52,12 +52,9 @@ public class TimeControlFragment extends Fragment implements RecyclerViewAdapter
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                updateCards();
-                refreshLayout.setRefreshing(false);
-            }
+        refreshLayout.setOnRefreshListener(() -> {
+            updateCards();
+            refreshLayout.setRefreshing(false);
         });
 
         add = view.findViewById(R.id.addToTimeControl);
