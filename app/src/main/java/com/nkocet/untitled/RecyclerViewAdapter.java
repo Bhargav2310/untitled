@@ -21,8 +21,6 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private static final String TAG = "RecyclerViewAdapter";
-
     Context context;
     ArrayList<Card> cards;
     CardClickListener listener;
@@ -95,7 +93,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            listener.onCardClick(getAdapterPosition());
+            listener.onCardClick(getBindingAdapterPosition());
         }
     }
 

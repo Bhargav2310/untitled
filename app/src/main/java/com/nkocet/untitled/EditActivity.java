@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,12 +27,10 @@ import java.util.Objects;
 
 public class EditActivity extends AppCompatActivity {
 
-    private static final String TAG = "EditActivity";
-
     MaterialButtonToggleGroup buttonToggleGroup;
     TextInputEditText nameEditText, locationEditText, rateEditText, startEditText, endEditText;
     Slider slider;
-    Chip SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;
+    Chip[] chips;
     MaterialTimePicker timePicker;
     Vibrator vibrator;
     SharedPreferences preferences;
@@ -68,13 +67,13 @@ public class EditActivity extends AppCompatActivity {
 
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        SUNDAY = findViewById(R.id.day1);
-        MONDAY = findViewById(R.id.day2);
-        TUESDAY = findViewById(R.id.day3);
-        WEDNESDAY = findViewById(R.id.day4);
-        THURSDAY = findViewById(R.id.day5);
-        FRIDAY = findViewById(R.id.day6);
-        SATURDAY = findViewById(R.id.day7);
+        chips = new Chip[]{findViewById(R.id.day1),
+                findViewById(R.id.day2),
+                findViewById(R.id.day3),
+                findViewById(R.id.day4),
+                findViewById(R.id.day5),
+                findViewById(R.id.day6),
+                findViewById(R.id.day7)};
 
         Card card = (Card) getIntent().getSerializableExtra("card");
 
@@ -148,44 +147,40 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        SUNDAY.setChecked(card.sprinkler.activeDays[0] == 1);
-        MONDAY.setChecked(card.sprinkler.activeDays[1] == 1);
-        TUESDAY.setChecked(card.sprinkler.activeDays[2] == 1);
-        WEDNESDAY.setChecked(card.sprinkler.activeDays[3] == 1);
-        THURSDAY.setChecked(card.sprinkler.activeDays[4] == 1);
-        FRIDAY.setChecked(card.sprinkler.activeDays[5] == 1);
-        SATURDAY.setChecked(card.sprinkler.activeDays[6] == 1);
+        for (int i = 0; i < chips.length; i++)
+            chips[i].setChecked(card.sprinkler.activeDays[i] == 1);
 
         startEditText.setText(card.sprinkler.activeTime[0]);
         endEditText.setText(card.sprinkler.activeTime[1]);
 
         saveButton.setOnClickListener(v -> {
             // TODO: (data validation required) Save current state and push to sever
+            if (TextUtils.isEmpty(nameEditText.getText()))
+                nameEditText.setError("This field cannot be left empty!");
+            else if (TextUtils.isEmpty(locationEditText.getText()))
+                locationEditText.setError("This field cannot be left empty!");
+            else {
+                String name = nameEditText.getText().toString(),
+                        location = locationEditText.getText().toString();
+                String[] colors = card.colors;
 
-            String nameString = Objects.requireNonNull(nameEditText.getText()).toString(),
-                    locationString = Objects.requireNonNull(locationEditText.getText()).toString();
-            String[] colors = card.colors;
+                int rateInt = (int) slider.getValue();
 
-            int rateInt = (int) slider.getValue();
-            int[] activeDays = {
-                    SUNDAY.isChecked() ? 1 : 0,
-                    MONDAY.isChecked() ? 1 : 0,
-                    TUESDAY.isChecked() ? 1 : 0,
-                    WEDNESDAY.isChecked() ? 1 : 0,
-                    THURSDAY.isChecked() ? 1 : 0,
-                    FRIDAY.isChecked() ? 1 : 0,
-                    SATURDAY.isChecked() ? 1 : 0
-            };
+                int[] activeDays = new int[chips.length];
+                for (int i = 0; i < chips.length; i++) activeDays[i] = chips[i].isChecked() ? 1 : 0;
 
-            String start = Objects.requireNonNull(startEditText.getText()).toString();
-            String end = Objects.requireNonNull(endEditText.getText()).toString();
+                String start = startEditText.getText().toString();
+                start = start.equals("") ? null : start;
+                String end = endEditText.getText().toString();
+                end = end.equals("") ? null : end;
 
-            Sprinkler sprinklerFinal;
-            sprinklerFinal = new Sprinkler(card.sprinkler.status, rateInt, activeDays, new String[]{start, end}, auto.isChecked());
-            Card finalCard = new Card(card.id, nameString, locationString, colors, sprinklerFinal);
-            database.editCard(card, finalCard);
-            setResult(HomeFragment.UPDATE_RECYCLER_VIEW);
-            finish();
+                Sprinkler sprinklerFinal;
+                sprinklerFinal = new Sprinkler(card.sprinkler.status, rateInt, activeDays, new String[]{start, end}, auto.isChecked());
+                Card finalCard = new Card(card.id, name, location, colors, sprinklerFinal);
+                database.editCard(card, finalCard);
+                setResult(HomeFragment.UPDATE_RECYCLER_VIEW);
+                finish();
+            }
         });
 
         deleteButton.setOnClickListener(v -> {

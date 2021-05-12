@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/list_item_parent"
-    android:layout_margin="12dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    app:strokeWidth="0.1dp"
     app:cardCornerRadius="8dp"
     android:clickable="true"
-    android:focusable="true"
-    app:strokeColor="?attr/colorOnPrimary"
-    app:strokeWidth="0.4dp">
-
+    android:focusable="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_margin="16dp"
@@ -22,14 +22,15 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000" />
+            app:civ_border_color="#474747" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="20dp">
 
             <TextView
                 android:id="@+id/tvTitle"
@@ -48,9 +49,6 @@
                 android:fontFamily="@font/rubik_light"
                 android:text="Subtitle"
                 android:textSize="14sp" />
-
         </LinearLayout>
-
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

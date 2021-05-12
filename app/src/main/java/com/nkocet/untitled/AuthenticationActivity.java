@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.biometrics.BiometricPrompt;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Vibrator;
@@ -42,38 +43,41 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         // TODO: 25/4/21 Biometric Authentication code here
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-            Executor executor = ContextCompat.getMainExecutor(this);
-            BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(this)
-                    .setTitle("App is locked")
-                    .setSubtitle("Authenticate with your fingerprint")
-                    .setNegativeButton("Cancel", executor, (dialog, which) -> {
-                    })
-                    .build();
-            biometricPrompt.authenticate(new CancellationSignal(), executor, new BiometricPrompt.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationError(int errorCode, CharSequence errString) {
-                    super.onAuthenticationError(errorCode, errString);
-                    finish();
-                }
+            FingerprintManager manager = (FingerprintManager) getApplicationContext().getSystemService(Context.FINGERPRINT_SERVICE);
+            if (manager.isHardwareDetected()) {
+                Executor executor = ContextCompat.getMainExecutor(this);
+                BiometricPrompt biometricPrompt = new BiometricPrompt.Builder(this)
+                        .setTitle("App is locked")
+                        .setSubtitle("Authenticate with your fingerprint")
+                        .setNegativeButton("Cancel", executor, (dialog, which) -> {
+                        })
+                        .build();
+                biometricPrompt.authenticate(new CancellationSignal(), executor, new BiometricPrompt.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        finish();
+                    }
 
-                @Override
-                public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
-                    super.onAuthenticationHelp(helpCode, helpString);
-                }
+                    @Override
+                    public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
+                        super.onAuthenticationHelp(helpCode, helpString);
+                    }
 
-                // On successful biometric verification
-                @Override
-                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-                    super.onAuthenticationSucceeded(result);
-                    startActivity(new Intent(AuthenticationActivity.this, Dashboard.class));
-                    finish();
-                }
+                    // On successful biometric verification
+                    @Override
+                    public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        startActivity(new Intent(AuthenticationActivity.this, Dashboard.class));
+                        finish();
+                    }
 
-                @Override
-                public void onAuthenticationFailed() {
-                    super.onAuthenticationFailed();
-                }
-            });
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                    }
+                });
+            }
         }
 
         login.setOnClickListener(v -> {

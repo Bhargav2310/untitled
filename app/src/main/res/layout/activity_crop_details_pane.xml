@@ -9,8 +9,8 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_height="?android:actionBarSize"
+        android:background="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,6 +21,8 @@
             style="?android:actionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:tint="?attr/colorOnPrimary"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
@@ -30,6 +32,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/back"
             android:fontFamily="@font/rubik_light"
+            android:textColor="?attr/colorOnPrimary"
             android:text="Crop 1"
             android:textSize="22dp" />
 
@@ -38,17 +41,17 @@
             style="?android:actionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:tint="?attr/colorOnPrimary"
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_baseline_share_24" />
-
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:src="@drawable/image"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,5 +1,6 @@
 package com.nkocet.untitled;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,8 +26,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     SharedPreferences preferences;
     MaterialButton reset;
     TextInputLayout container0, container1, container2;
-    private static final String TAG = "ForgotPasswordActivity";
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +57,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     for (Character character : s.toString().toCharArray()) {
                         if (Character.isLetter(character)) {
                             container0.setStartIconDrawable(R.drawable.ic_baseline_alternate_email_24);
+                            container0.setPrefixText("");
                             container0.setHint("Email");
                             break;
                         } else {
                             container0.setStartIconDrawable(R.drawable.ic_baseline_phone_24);
+                            container0.setPrefixText("+91");
                             container0.setHint("Phone");
                         }
                     }

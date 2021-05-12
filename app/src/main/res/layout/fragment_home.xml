@@ -40,7 +40,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik_light"
                             android:text="Hello world"
-                            android:textColor="?colorOnPrimary"
+                            android:textColor="?colorOnSecondary"
                             android:textSize="20dp"
                             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik_light"
                             android:text="This is a card"
-                            android:textColor="?colorOnPrimary"
+                            android:textColor="?colorOnSecondary"
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
