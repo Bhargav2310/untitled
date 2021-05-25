@@ -67,7 +67,6 @@ Room for improvement:
 
 
 ## Acknowledgements
-Give credit here.
 - Material-UI documentation
 - Android official documentation
 
